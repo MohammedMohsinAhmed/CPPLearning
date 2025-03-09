@@ -1,0 +1,28 @@
+SomeObj Something(SomeObj o)
+Takes a parameter o of type SomeObj by value
+This means it creates and returns a copy of whatever was passed in. This means the actual value of o in the scope of the function
+calling Something remains unchanged. E.g if Something modifies o.age to 2, then in main o.age would still be the original value
+For large objects, this copy can be expensive
+
+SomeObj Something(SomeObj& o) 
+Takes a parameter o of type SomeObj by reference
+This means we can modify the actual value of the object o in teh scope the fucntion was called
+E.g if Something modified o.age to 2, then o.age = 2 as well in main, both o's are the same.
+No copy is required here, making this method faster
+
+Sometimes we want to perform some action with a large object parameter, without actually changing any values in the object
+The copy would be expensive, but we also dont want to risk changing the object values
+Here we would use:
+SomeObj Something(SomeObj const& o)
+This means we pass o in by reference, but also prevent any values in o being changed. This is the best practice to resolve the problem stated before
+
+For the time being, avoid making functions that return references such as
+int& BadFunction() {
+	int a = 3;
+	return a;
+}
+On returning, a is no longer in scope and will get destructed, but we'lll be left with a reference to a's memory locations
+This could be dangerous, now we have a reference to memory that we can use to modify mem at that location
+Returning a reference is an advanced technique, dont worry about it for now
+
+Return by value is always safe. A copy is returned, but if a copy doesnt need to be created, the compiler will optimise this away
